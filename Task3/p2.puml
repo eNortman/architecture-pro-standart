@@ -1,0 +1,58 @@
+@startuml
+title рис2. оформление депозита - диаграмма контейнера
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "Пользователь", "Клиент банка")
+
+System(front_http, "nginx", "Фронтальный веб-сервер + маршрутизатор + балансир + HTTPS")
+System(site, "Сайт", "PHP + ReactJS")
+
+Container_Boundary(ibank_bnd, "Интернет-банк") {
+    Container(ibnk_iis, "WebApp", "MS IIS", "Microsoft IIS со старым  ASP MVC приложением интернет-банка")
+
+    ContainerDb(ibnk_db, "БД", "MS-SQL", "База данных Интернет-банка")
+
+    Container(ibnk_web_cl, "WebClient", "Клиент нового веб-сайта, на которое будут переносится функции")
+    Container(ibnk_web_srv, "Интернет Банк API", "Backend сервер интернет-банка")
+
+    Rel(ibnk_iis, ibnk_db, "")
+    Rel(ibnk_web_srv, ibnk_db, "")
+    Rel(ibnk_web_cl, ibnk_web_srv, "")
+
+}
+
+ContainerQueue(qbroker, "Интеграционный брокер", "Kafka", "Интеграция между системами")
+
+Person(oper, "Оператор", "Сотрудник бэк-офиса")
+
+Container_Boundary(abs_bnd, "АБС") {
+    Container(absapp, "АБС Клиент", "Delphi Client App", "Клиентской приложение оператора бэк-офиса")
+    ContainerDb(abs_db, "БД", "OracleDb", "База данных АБС c логикой")
+      
+    Container(absapi, "AБС Api","","Сервер интеграции и обработки событий АБС")
+
+    Rel(absapp, abs_db, "")
+    Rel(absapi, abs_db, "")
+}
+
+Rel(oper, absapp, "")
+
+System(sms, "Шлюз телеком-оператора")
+
+Rel(ibnk_web_srv, qbroker, "" )
+Rel(absapi, qbroker, "" )
+
+Rel(user, front_http, "соединение до внутреннего контура банка защищено https")
+Rel(front_http, ibnk_iis, "")
+
+Rel(front_http, site, "")
+Rel(front_http, ibnk_web_cl, "")
+
+Rel(qbroker, sms, "сообщения для отправки")
+
+
+SHOW_LEGEND()
+
+@enduml

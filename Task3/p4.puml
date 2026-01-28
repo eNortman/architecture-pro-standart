@@ -1,0 +1,24 @@
+@startuml
+title рис3.оформление депозита (альтернатива с формой на сайте)
+' top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "Пользователь", "Клиент банка")
+Person(oper, "Оператор", "Сотрудник бэк-офиса")
+System(site, "Сайт")
+System(dbank, "Интернет-банк")
+System(abs, "АБС")
+System_Ext(sms, "Шлюз телеком-оператора")
+
+Rel(user, site, "Размещает заявку")
+Rel(site, abs, "Передача заявки")
+Rel(site, sms, "отправка смс")
+Rel(sms, user, "отправка смс")
+Rel(oper, abs, "работа с заявкой на сайте")
+
+Rel(user, dbank, "работа с заявкой в и-нет банке")
+Rel(dbank, sms, "отправка смс")
+Rel(dbank, abs, "Передача заявки")
+
+@enduml
