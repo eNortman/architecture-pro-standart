@@ -1,0 +1,25 @@
+@startuml
+title рис1. оформление депозита - диаграмма контекста 
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Component.puml
+
+Person(user, "Пользователь", "Клиент банка")
+Person(oper, "Оператор", "Сотрудник бэк-офиса")
+System(site, "Сайт")
+System(dbank, "Интернет-банк")
+System(abs, "АБС")
+System(sms, "Шлюз телеком-оператора")
+
+Rel(user, site, "заявка")
+Rel(site, dbank, "Передача заявки в и-нет банк")
+
+
+Rel(user, dbank, "заявка")
+Rel(dbank, sms, "отправка смс")
+Rel(dbank, abs, "заявки")
+
+Rel(sms, user, "отправка смс")
+Rel(oper, abs, "работа с заявкой на сайте")
+
+@enduml

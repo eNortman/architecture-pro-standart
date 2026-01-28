@@ -1,0 +1,42 @@
+ @startgantt
+'projectscale quarterly
+printscale quarterly zoom 7
+Project starts the 1th of january 2026
+sunday are colored in LightGray
+-- подготовительные задачи, проектирование --
+[Разработка API] as [API] requires 4 week
+[Развертывание Kafka] as [DEPLKAF] on {bank_it_team} requires 4 week
+[DEPLKAF] starts D+30
+
+[Развертывание и доработка БД, миграция] as [DBAPP] on {bank_it_team} requires 4 week
+[DBAPP] starts D+95
+
+-- шлюз телеком-оператора --
+[Доработка шлюза телеком-оператора] as [TLC1] on {bank_it_team} requires 5 week
+[TLC1] starts D+60
+
+-- АБС --
+[Доработка клиента АБС] as [ABS] on {bank_abs_team} requires 4 week
+[ABS] starts D+30
+[AБC API] as [ABS1] on {bank_abs_team} requires 6 week
+[ABS1] starts D+60
+
+-- Интернет-Банк --
+[Разработка Интернет-Банка ] as [DBO1] on {inet_bank_team} requires 14 week
+[DBO1] starts D+30
+note bottom 
+ разработка микросервиса API интернет-банка
+ разработка web-клиента интернет банка (доработка сайта)
+end note
+
+-- разработка Колл-Центр --
+[доработка колл-центра] as [CCO1] on {bank_abs_team} requires 5 week
+[CCO1] starts D+105
+
+-- развёртывание и тестирование --
+[развертывание и тестирование] as [TST01] on {bank_it_team} requires 5 week
+[TST01] starts D+135
+
+
+@endgantt
+
